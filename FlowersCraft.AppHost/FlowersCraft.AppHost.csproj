@@ -13,6 +13,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\FlowersCraft.ApiService\FlowersCraft.ApiService.csproj" />
+    <ProjectReference Include="..\TelegramConsoleWorker\TelegramConsoleWorker.csproj" />
   </ItemGroup>
 
   <ItemGroup>

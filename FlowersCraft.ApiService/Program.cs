@@ -1,11 +1,10 @@
 using FlowersCraft.ApiService.Abstractions;
 using FlowersCraft.ApiService.Data;
+using FlowersCraft.ApiService.GraphQL;
 using FlowersCraft.ApiService.Services;
 using Mapster;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.OpenApi.Models;
 using Scalar.AspNetCore;
-using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 var configuration = builder.Configuration;
@@ -23,6 +22,12 @@ builder.Services.AddDbContextFactory<FlowersCraftDbContext>(options =>
     )
 );
 builder.Services.AddControllers();
+builder.Services
+    .AddGraphQLServer()
+    .AddQueryType<Query>()
+    .AddMutationType<Mutation>()
+    .AddFiltering()
+    .AddSorting();
 
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<IOrderService, OrderService>();
@@ -53,6 +58,7 @@ if (app.Environment.IsDevelopment())
 
 app.MapDefaultEndpoints();
 app.MapControllers();
+app.MapGraphQL();
 app.UseCors();
 
-app.Run();
+await app.RunAsync();
